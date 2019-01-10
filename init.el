@@ -1,15 +1,32 @@
 ;; store anything added via the customize interface in a separate file instead of polluting this one
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 
+;; add lisp/ to load path
+(add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
+
 ;; machinery for installing required packages, borrowed from steve purcell
 ;; https://github.com/purcell/emacs.d/blob/master/lisp/init-elpa.el
-(add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
 (require 'init-elpa)
+
+;; ripgrep (for projectile)
+(require-package 'ripgrep)
+
+;; project interaction library
+(require-package 'projectile)
+(projectile-mode +1)
+(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
 
 ;; minibuffer completion
 (require-package 'counsel)
 (ivy-mode 1)
 (setq ivy-use-virtual-buffers t)
+
+;; prompt available keybinding completions
+(require-package 'which-key)
+(which-key-mode)
+
+;; major mode for editing jsx files (React)
+(require-package 'rjsx-mode)
 
 ;; mimics the effect of fill-column in visual-line-mode
 (require-package 'visual-fill-column)
@@ -38,10 +55,24 @@
 
 ;; use ibuffer instead of list-buffers
 (define-key global-map [remap list-buffers] 'ibuffer)
+;; group ibuffer buffers by git repo
+(require-package 'ibuffer-vc)
+(add-hook 'ibuffer-hook
+  (lambda ()
+    (ibuffer-vc-set-filter-groups-by-vc-root)
+    (unless (eq ibuffer-sorting-mode 'alphabetic)
+      (ibuffer-do-sort-by-alphabetic))))
+
+;; save state between sessions
+(desktop-save-mode 1)
 
 ;; auto close brackets
 (electric-pair-mode 1)
 
-;; don't make backup files (they end with a tilde, ~)
-(setq-default make-backup-files nil)
+;; indent css files with 2 spaces
+(setq css-indent-offset 2)
 
+;; set defaults
+(setq-default
+  indent-tabs-mode nil ;; spaces instead of tabs
+  make-backup-files nil) ;; don't make backup files (they end with a tilde, ~)
