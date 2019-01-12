@@ -76,3 +76,15 @@
 (setq-default
   indent-tabs-mode nil ;; spaces instead of tabs
   make-backup-files nil) ;; don't make backup files (they end with a tilde, ~)
+
+
+;; org mode settings
+
+(define-key global-map (kbd "C-c a") 'org-agenda)
+(global-set-key (kbd "C-c c") 'org-capture)
+
+(add-hook 'org-mode-hook 'org-indent-mode)
+
+(setq org-capture-templates '(("t" "Todo [inbox]" entry
+                               (file+headline "~/Dropbox/org/inbox.org" "Tasks")
+                               "* TODO %i%?")))
