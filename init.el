@@ -1,3 +1,8 @@
+;;; init.el --- Load the full configuration -*- lexical-binding: t -*-
+
+;; Produce backtraces when errors occur
+(setq debug-on-error t)
+
 ;; store anything added via the customize interface in a separate file instead of polluting this one
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 
@@ -5,8 +10,24 @@
 (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
 
 ;; machinery for installing required packages, borrowed from steve purcell
-;; https://github.com/purcell/emacs.d/blob/master/lisp/init-elpa.el
 (require 'init-elpa)
+
+;; adjust garbage collection thresholds during startup, and thereafter
+(let ((normal-gc-cons-threshold (* 20 1024 1024))
+      (init-gc-cons-threshold (* 128 1024 1024)))
+  (setq gc-cons-threshold init-gc-cons-threshold)
+  (add-hook 'emacs-startup-hook
+            (lambda () (setq gc-cons-threshold normal-gc-cons-threshold))))
+
+;; cursor
+(setq-default cursor-type '(bar . 4))
+(add-to-list 'default-frame-alist '(cursor-color . "#20BBFC"))
+
+;; theme
+(require-package 'doom-themes)
+(load-theme 'doom-one-light t)
+(doom-themes-visual-bell-config)
+(doom-themes-org-config)
 
 ;; ripgrep (for projectile)
 (require-package 'ripgrep)
@@ -25,15 +46,22 @@
 (require-package 'which-key)
 (which-key-mode)
 
-;; major mode for editing jsx files (React)
-(require-package 'rjsx-mode)
+;; typography
+(set-frame-font "Operator Mono 18")
+(setq-default line-spacing 8)
+(global-prettify-symbols-mode 1)
+(setq-default fill-column 80)
 
-;; mimics the effect of fill-column in visual-line-mode
+;; wrap and center text in text (including org) files
 (require-package 'visual-fill-column)
-;; turn on visual-fill-column-mode when visual-line-mode is turned on
 (add-hook 'visual-line-mode-hook #'visual-fill-column-mode)
-;; center in frame
+(add-hook 'text-mode-hook #'visual-line-mode)
 (setq visual-fill-column-center-text t)
+
+;; markdown support
+(require-package 'markdown-mode)
+(setq markdown-enable-wiki-links 1)
+(setq markdown-link-space-sub-char " ")
 
 ;; hide tool bar, scroll bar, and menu bar
 (if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
@@ -44,17 +72,15 @@
 (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
 (add-to-list 'default-frame-alist '(ns-appearance . light))
 
-;; set default font
-(set-frame-font "Operator Mono 18")
-
 ;; don't display the splash screen (scratch will be displayed instead)
-(setq inhibit-splash-screen t)
+(setq inhibit-startup-screen t)
 
 ;; turn off audible bell
 (setq ring-bell-function 'ignore)
 
 ;; use ibuffer instead of list-buffers
 (define-key global-map [remap list-buffers] 'ibuffer)
+
 ;; group ibuffer buffers by git repo
 (require-package 'ibuffer-vc)
 (add-hook 'ibuffer-hook
@@ -74,17 +100,5 @@
 
 ;; set defaults
 (setq-default
-  indent-tabs-mode nil ;; spaces instead of tabs
-  make-backup-files nil) ;; don't make backup files (they end with a tilde, ~)
-
-
-;; org mode settings
-
-(define-key global-map (kbd "C-c a") 'org-agenda)
-(global-set-key (kbd "C-c c") 'org-capture)
-
-(add-hook 'org-mode-hook 'org-indent-mode)
-
-(setq org-capture-templates '(("t" "Todo [inbox]" entry
-                               (file+headline "~/Dropbox/org/inbox.org" "Tasks")
-                               "* TODO %i%?")))
+  indent-tabs-mode nil
+  make-backup-files nil)
