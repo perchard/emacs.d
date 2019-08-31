@@ -63,7 +63,7 @@
 (setq markdown-enable-wiki-links 1)
 (setq markdown-link-space-sub-char " ")
 
-;; browse/filter/edit directories of plan text (inspired by Notational Velocity)
+;; browse/filter/edit directories of plain text (inspired by Notational Velocity)
 (require-package 'deft)
 (setq deft-extensions '("md" "txt" "org"))
 (setq deft-use-filename-as-title t)
@@ -106,9 +106,6 @@
 
 ;; auto close brackets
 (electric-pair-mode 1)
-
-;; indent css files with 2 spaces
-(setq css-indent-offset 2)
 
 ;; set defaults
 (setq-default
