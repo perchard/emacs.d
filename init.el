@@ -63,6 +63,18 @@
 (setq markdown-enable-wiki-links 1)
 (setq markdown-link-space-sub-char " ")
 
+;; browse/filter/edit directories of plan text (inspired by Notational Velocity)
+(require-package 'deft)
+(setq deft-extensions '("md" "txt" "org"))
+(setq deft-use-filename-as-title t)
+(setq deft-strip-summary-regexp
+  (concat "\\(^Tags:.*$"
+          "\\|^Title:.*$"
+          "\\|^\\(?:^\\|[^\\]\\)\\(\\[\\[\\([^]|]+\\)\\(|\\([^]]+\\)\\)?\\]\\]\\)$" ;; [[WikiLinks]]
+          "\\)"))
+(setq deft-directory "~/Dropbox/zettelkasten")
+(global-set-key [f8] 'deft)
+
 ;; hide tool bar, scroll bar, and menu bar
 (if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
 (if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
