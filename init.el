@@ -75,6 +75,10 @@
 (setq deft-directory "~/Dropbox/zettelkasten")
 (global-set-key [f8] 'deft)
 
+;; clojure
+(require-package 'clojure-mode)
+(require-package 'cider)
+
 ;; hide tool bar, scroll bar, and menu bar
 (if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
 (if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
