@@ -23,9 +23,16 @@
 (setq-default cursor-type '(bar . 4))
 (add-to-list 'default-frame-alist '(cursor-color . "#20BBFC"))
 
-;; theme
+;; set location, used by theme-changer
+(setq calendar-latitude 37.8716)
+(setq calendar-longitude -122.273)
+(setq calendar-location-name "Berkeley, CA")
+
+;; set theme, based on time
+(require 'theme-changer)
+(add-to-list 'load-path "~/.emacs.d/elpa-26.1/theme-changer-20171221.1927/theme-changer")
 (require-package 'doom-themes)
-(load-theme 'doom-one-light t)
+(change-theme 'doom-one-light 'doom-one)
 (doom-themes-visual-bell-config)
 (doom-themes-org-config)
 
@@ -63,6 +70,16 @@
 (setq markdown-enable-wiki-links 1)
 (setq markdown-link-space-sub-char " ")
 
+;; spell check
+(add-hook 'text-mode-hook #'flyspell-mode)
+
+;; sentences end with a single space
+(setq sentence-end-double-space nil)
+
+;; window management
+(windmove-default-keybindings 'super)
+(add-hook 'after-init-hook 'winner-mode)
+
 ;; browse/filter/edit directories of plain text (inspired by Notational Velocity)
 (require-package 'deft)
 (setq deft-extensions '("md" "txt" "org"))
@@ -85,8 +102,8 @@
 (if (fboundp 'menu-bar-mode) (menu-bar-mode -1))
 
 ;; transparent titlebar
-(add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
-(add-to-list 'default-frame-alist '(ns-appearance . light))
+(require-package 'ns-auto-titlebar)
+(when (eq system-type 'darwin) (ns-auto-titlebar-mode))
 
 ;; don't display the splash screen (scratch will be displayed instead)
 (setq inhibit-startup-screen t)
@@ -105,9 +122,6 @@
     (unless (eq ibuffer-sorting-mode 'alphabetic)
       (ibuffer-do-sort-by-alphabetic))))
 (setq-default ibuffer-show-empty-filter-groups nil)
-
-;; save state between sessions
-(desktop-save-mode 1)
 
 ;; auto close brackets
 (electric-pair-mode 1)
