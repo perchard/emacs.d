@@ -28,14 +28,6 @@
 (setq calendar-longitude -122.273)
 (setq calendar-location-name "Berkeley, CA")
 
-;; set theme, based on time
-(require 'theme-changer)
-(add-to-list 'load-path "~/.emacs.d/elpa-26.1/theme-changer-20171221.1927/theme-changer")
-(require-package 'doom-themes)
-(change-theme 'doom-one-light 'doom-one)
-(doom-themes-visual-bell-config)
-(doom-themes-org-config)
-
 ;; ripgrep (for projectile)
 (require-package 'ripgrep)
 
@@ -80,7 +72,7 @@
 (windmove-default-keybindings 'super)
 (add-hook 'after-init-hook 'winner-mode)
 
-;; browse/filter/edit directories of plain text (inspired by Notational Velocity)
+;; browse/filter/edit directories of plain text (inspired by notational velocity)
 (require-package 'deft)
 (setq deft-extensions '("md" "txt" "org"))
 (setq deft-use-filename-as-title t)
@@ -104,6 +96,14 @@
 ;; transparent titlebar
 (require-package 'ns-auto-titlebar)
 (when (eq system-type 'darwin) (ns-auto-titlebar-mode))
+
+;; set theme, based on time
+(require-package 'theme-changer)
+(require 'theme-changer)
+(require-package 'doom-themes)
+(change-theme 'doom-one-light 'doom-one)
+(doom-themes-visual-bell-config)
+(doom-themes-org-config)
 
 ;; don't display the splash screen (scratch will be displayed instead)
 (setq inhibit-startup-screen t)
