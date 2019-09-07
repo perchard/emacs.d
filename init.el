@@ -3,8 +3,13 @@
 ;; Produce backtraces when errors occur
 (setq debug-on-error t)
 
-;; store anything added via the customize interface in a separate file instead of polluting this one
+;; store anything added via the customize interface in a separate file to avoid polluting this one
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
+
+;; set location (used by theme-changer)
+(setq calendar-latitude 37.8716)
+(setq calendar-longitude -122.273)
+(setq calendar-location-name "Berkeley, CA")
 
 ;; add lisp/ to load path
 (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
@@ -23,10 +28,8 @@
 (setq-default cursor-type '(bar . 4))
 (add-to-list 'default-frame-alist '(cursor-color . "#20BBFC"))
 
-;; set location, used by theme-changer
-(setq calendar-latitude 37.8716)
-(setq calendar-longitude -122.273)
-(setq calendar-location-name "Berkeley, CA")
+;; set window (frame) startup size
+(setq default-frame-alist '((left . -1) (width . 100) (fullscreen . fullheight)))
 
 ;; ripgrep (for projectile)
 (require-package 'ripgrep)
@@ -97,7 +100,7 @@
 (require-package 'ns-auto-titlebar)
 (when (eq system-type 'darwin) (ns-auto-titlebar-mode))
 
-;; set theme, based on time
+;; set theme based on time
 (require-package 'theme-changer)
 (require 'theme-changer)
 (require-package 'doom-themes)
@@ -130,3 +133,7 @@
 (setq-default
   indent-tabs-mode nil
   make-backup-files nil)
+
+(provide 'init)
+
+;;; init.el ends here
