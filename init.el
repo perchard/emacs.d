@@ -49,7 +49,7 @@
 (which-key-mode)
 
 ;; typography
-(set-frame-font "Operator Mono 18")
+(add-to-list 'default-frame-alist '(font . "Operator Mono 18"))
 (setq-default line-spacing 8)
 (global-prettify-symbols-mode 1)
 (setq-default fill-column 80)
