@@ -87,6 +87,17 @@
 (setq deft-directory "~/Dropbox/zettelkasten")
 (global-set-key [f8] 'deft)
 
+;; org mode setup
+(define-key global-map (kbd "C-c a") 'org-agenda)
+(global-set-key (kbd "C-c c") 'org-capture)
+(setq org-agenda-files
+      '("~/Dropbox/gtd/inbox.org"
+        "~/Dropbox/gtd/projects.org"
+        "~/Dropbox/gtd/work.org"))
+(setq org-capture-templates
+      '(("t" "Todo [inbox]" entry (file "~/Dropbox/gtd/inbox.org")
+         "* TODO %?")))
+
 ;; clojure
 (require-package 'clojure-mode)
 (require-package 'cider)
