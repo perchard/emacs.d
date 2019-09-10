@@ -17,6 +17,11 @@
 ;; machinery for installing required packages, borrowed from steve purcell
 (require 'init-elpa)
 
+;; set up $PATH
+(require-package 'exec-path-from-shell)
+(when (memq window-system '(mac ns x))
+  (exec-path-from-shell-initialize))
+
 ;; adjust garbage collection thresholds during startup, and thereafter
 (let ((normal-gc-cons-threshold (* 20 1024 1024))
       (init-gc-cons-threshold (* 128 1024 1024)))
