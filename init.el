@@ -89,19 +89,25 @@
           "\\|^Title:.*$"
           "\\|^\\(?:^\\|[^\\]\\)\\(\\[\\[\\([^]|]+\\)\\(|\\([^]]+\\)\\)?\\]\\]\\)$" ;; [[WikiLinks]]
           "\\)"))
-(setq deft-directory "~/Dropbox/zettelkasten")
+(setq deft-directory "~/Library/Mobile Documents/com~apple~CloudDocs/Zettelkasten")
 (global-set-key [f8] 'deft)
 
 ;; org mode setup
 (define-key global-map (kbd "C-c a") 'org-agenda)
 (global-set-key (kbd "C-c c") 'org-capture)
 (setq org-agenda-files
-      '("~/Dropbox/gtd/inbox.org"
-        "~/Dropbox/gtd/projects.org"
-        "~/Dropbox/gtd/work.org"))
+      '("~/Library/Mobile Documents/iCloud~com~appsonthemove~beorg/Documents/inbox.org"
+        "~/Library/Mobile Documents/iCloud~com~appsonthemove~beorg/Documents/projects.org"
+        "~/Library/Mobile Documents/iCloud~com~appsonthemove~beorg/Documents/work.org"
+        "~/Library/Mobile Documents/iCloud~com~appsonthemove~beorg/Documents/consulting.org"))
+(setq org-refile-targets '((org-agenda-files :maxlevel . 3)))
 (setq org-capture-templates
-      '(("t" "Todo [inbox]" entry (file "~/Dropbox/gtd/inbox.org")
-         "* TODO %?")))
+      '(("t"
+         "Todo [inbox]"
+         entry
+         (file "~/Library/Mobile Documents/iCloud~com~appsonthemove~beorg/Documents/inbox.org")
+         "* TODO %?"
+         :prepend t)))
 
 ;; clojure
 (require-package 'clojure-mode)
