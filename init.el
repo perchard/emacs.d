@@ -69,6 +69,8 @@
 (require-package 'markdown-mode)
 (setq markdown-enable-wiki-links 1)
 (setq markdown-link-space-sub-char " ")
+(load "~/.emacs.d/site-lisp/adaptive-wrap-vp.el")
+(add-hook 'markdown-mode-hook #'adaptive-wrap-prefix-vp-mode)
 
 ;; spell check
 (add-hook 'text-mode-hook #'flyspell-mode)
