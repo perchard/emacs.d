@@ -69,6 +69,7 @@
 (require-package 'markdown-mode)
 (setq markdown-enable-wiki-links 1)
 (setq markdown-link-space-sub-char " ")
+(setq markdown-indent-on-enter 'indent-and-new-item)
 (load "~/.emacs.d/site-lisp/adaptive-wrap-vp.el")
 (add-hook 'markdown-mode-hook #'adaptive-wrap-prefix-vp-mode)
 
