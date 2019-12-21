@@ -11,8 +11,9 @@
 (setq calendar-longitude -122.273)
 (setq calendar-location-name "Berkeley, CA")
 
-;; add lisp/ to load path
+;; add lisp/ and site-lisp/ to load path
 (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
+(add-to-list 'load-path (expand-file-name "site-lisp" user-emacs-directory))
 
 ;; machinery for installing required packages, borrowed from steve purcell
 (require 'init-elpa)
@@ -70,7 +71,7 @@
 (setq markdown-enable-wiki-links 1)
 (setq markdown-link-space-sub-char " ")
 (setq markdown-indent-on-enter 'indent-and-new-item)
-(load "~/.emacs.d/site-lisp/adaptive-wrap-vp.el")
+(require 'adaptive-wrap-vp)
 (add-hook 'markdown-mode-hook #'adaptive-wrap-prefix-vp-mode)
 
 ;; spell check
@@ -83,32 +84,80 @@
 (windmove-default-keybindings 'super)
 (add-hook 'after-init-hook 'winner-mode)
 
-;; browse/filter/edit directories of plain text (inspired by notational velocity)
-(require-package 'deft)
+;; zettelkasten
+(defgroup zetteldeft nil
+  "A zettelkasten on top of deft."
+  :group 'deft
+  :link '(url-link "https://efls.github.io/zetteldeft"))
+(defcustom zetteldeft-id-format "%Y%m%d%H%M"
+  "Format used when generating zetteldeft IDs."
+  :type 'string
+  :group 'zetteldeft)
+(defcustom zetteldeft-id-regex "20[0-9]\\{10\\}"
+  "The regular expression used to search for zetteldeft IDs."
+  :type 'string
+  :group 'zetteldeft)
+(defcustom zetteldeft-title-prefix "[["
+  "Prefix string included when `zetteldeft--insert-title' is called."
+  :type 'string
+  :group 'zetteldeft)
+(defcustom zetteldeft-title-suffix "]]\nTitle:\nTags:\n\n"
+  "String inserted below title when `zetteldeft--insert-title' is called."
+  :type 'string
+  :group 'zetteldeft)
+(defun zetteldeft-generate-id ()
+  "Generate an ID in the format of `zetteldeft-id-format'."
+  (format-time-string zetteldeft-id-format))
+(setq deft-new-file-format zetteldeft-id-format)
 (setq deft-extensions '("md" "txt" "org"))
 (setq deft-use-filename-as-title t)
+(setq deft-directory "~/Dropbox/zettelkasten")
 (setq deft-strip-summary-regexp
   (concat "\\(^Tags:.*$"
           "\\|^Title:.*$"
           "\\|^\\(?:^\\|[^\\]\\)\\(\\[\\[\\([^]|]+\\)\\(|\\([^]]+\\)\\)?\\]\\]\\)$" ;; [[WikiLinks]]
           "\\)"))
-(setq deft-directory "~/Library/Mobile Documents/com~apple~CloudDocs/Zettelkasten")
+(require 'zetteldeft)
+(require-package 'deft)
+(require-package 'avy)
+(global-set-key (kbd "C-c d d") 'deft)
+(global-set-key (kbd "C-c d D") 'zetteldeft-deft-new-search)
+(global-set-key (kbd "C-c d R") 'deft-refresh)
+(global-set-key (kbd "C-c d s") 'zetteldeft-search-at-point)
+(global-set-key (kbd "C-c d c") 'zetteldeft-search-current-id)
+(global-set-key (kbd "C-c d f") 'zetteldeft-follow-link)
+(global-set-key (kbd "C-c d F") 'zetteldeft-avy-file-search-ace-window)
+(global-set-key (kbd "C-c d l") 'zetteldeft-avy-link-search)
+(global-set-key (kbd "C-c d t") 'zetteldeft-avy-tag-search)
+(global-set-key (kbd "C-c d T") 'zetteldeft-tag-buffer)
+(global-set-key (kbd "C-c d i") 'zetteldeft-find-file-id-insert)
+(global-set-key (kbd "C-c d I") 'zetteldeft-find-file-full-title-insert)
+(global-set-key (kbd "C-c d o") 'zetteldeft-find-file)
+(global-set-key (kbd "C-c d n") 'zetteldeft-new-file)
+(global-set-key (kbd "C-c d N") 'zetteldeft-new-file-and-link)
+(global-set-key (kbd "C-c d r") 'zetteldeft-file-rename)
+(global-set-key (kbd "C-c d x") 'zetteldeft-count-words)
 (global-set-key [f8] 'deft)
 
 ;; org mode setup
 (define-key global-map (kbd "C-c a") 'org-agenda)
 (global-set-key (kbd "C-c c") 'org-capture)
 (setq org-agenda-files
-      '("~/Library/Mobile Documents/iCloud~com~appsonthemove~beorg/Documents/inbox.org"
-        "~/Library/Mobile Documents/iCloud~com~appsonthemove~beorg/Documents/projects.org"
-        "~/Library/Mobile Documents/iCloud~com~appsonthemove~beorg/Documents/work.org"
-        "~/Library/Mobile Documents/iCloud~com~appsonthemove~beorg/Documents/consulting.org"))
+      '("~/Dropbox/gtd/inbox.org"
+        "~/Dropbox/gtd/backlog.org"
+        "~/Dropbox/gtd/reading.org"
+        "~/Dropbox/gtd/shopstyle.org"
+        "~/Dropbox/gtd/consulting.org"
+        "~/Dropbox/gtd/someday.org"))
 (setq org-refile-targets '((org-agenda-files :maxlevel . 3)))
+(setq org-refile-use-outline-path 'file)
+(setq org-outline-path-complete-in-steps nil)
+(setq org-refile-allow-creating-parent-nodes 'confirm)
 (setq org-capture-templates
       '(("t"
          "Todo [inbox]"
          entry
-         (file "~/Library/Mobile Documents/iCloud~com~appsonthemove~beorg/Documents/inbox.org")
+         (file "~/Dropbox/gtd/inbox.org")
          "* TODO %?"
          :prepend t)))
 
