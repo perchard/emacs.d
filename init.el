@@ -142,10 +142,12 @@
 ;; org mode setup
 (define-key global-map (kbd "C-c a") 'org-agenda)
 (global-set-key (kbd "C-c c") 'org-capture)
+(add-hook 'org-mode-hook 'org-indent-mode)
 (setq org-agenda-files
       '("~/Dropbox/gtd/inbox.org"
         "~/Dropbox/gtd/backlog.org"
-        "~/Dropbox/gtd/reading.org"
+        "~/Dropbox/gtd/to-read.org"
+        "~/Dropbox/gtd/to-watch.org"
         "~/Dropbox/gtd/shopstyle.org"
         "~/Dropbox/gtd/consulting.org"
         "~/Dropbox/gtd/someday.org"))
