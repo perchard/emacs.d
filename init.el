@@ -55,15 +55,16 @@
 (which-key-mode)
 
 ;; typography
-(add-to-list 'default-frame-alist '(font . "Operator Mono 18"))
+(add-to-list 'default-frame-alist '(font . "Operator Mono 16"))
 (setq-default line-spacing 8)
 (global-prettify-symbols-mode 1)
 (setq-default fill-column 80)
 
-;; wrap and center text in text (including org) files
+;; wrap and center text in markdown-mode and org-mode
 (require-package 'visual-fill-column)
-(add-hook 'visual-line-mode-hook #'visual-fill-column-mode)
-(add-hook 'text-mode-hook #'visual-line-mode)
+(add-hook 'visual-fill-column-mode-hook #'visual-line-mode)
+(add-hook 'markdown-mode-hook #'visual-fill-column-mode)
+(add-hook 'org-mode-hook #'visual-fill-column-mode)
 (setq visual-fill-column-center-text t)
 
 ;; markdown support
@@ -97,26 +98,18 @@
   "The regular expression used to search for zetteldeft IDs."
   :type 'string
   :group 'zetteldeft)
-(defcustom zetteldeft-title-prefix "[["
+(defcustom zetteldeft-title-prefix "title: "
   "Prefix string included when `zetteldeft--insert-title' is called."
   :type 'string
   :group 'zetteldeft)
-(defcustom zetteldeft-title-suffix "]]\nTitle:\nTags:\n\n"
+(defcustom zetteldeft-title-suffix "\ntags: \n\n"
   "String inserted below title when `zetteldeft--insert-title' is called."
   :type 'string
   :group 'zetteldeft)
-(defun zetteldeft-generate-id ()
-  "Generate an ID in the format of `zetteldeft-id-format'."
-  (format-time-string zetteldeft-id-format))
+(setq deft-strip-summary-regexp "^title:.*$\\|^id:.*$\\|^tags:.*$")
 (setq deft-new-file-format zetteldeft-id-format)
 (setq deft-extensions '("md" "txt" "org"))
-(setq deft-use-filename-as-title t)
 (setq deft-directory "~/Dropbox/zettelkasten")
-(setq deft-strip-summary-regexp
-  (concat "\\(^Tags:.*$"
-          "\\|^Title:.*$"
-          "\\|^\\(?:^\\|[^\\]\\)\\(\\[\\[\\([^]|]+\\)\\(|\\([^]]+\\)\\)?\\]\\]\\)$" ;; [[WikiLinks]]
-          "\\)"))
 (require 'zetteldeft)
 (require-package 'deft)
 (require-package 'avy)
@@ -137,7 +130,6 @@
 (global-set-key (kbd "C-c d N") 'zetteldeft-new-file-and-link)
 (global-set-key (kbd "C-c d r") 'zetteldeft-file-rename)
 (global-set-key (kbd "C-c d x") 'zetteldeft-count-words)
-(global-set-key [f8] 'deft)
 
 ;; org mode setup
 (define-key global-map (kbd "C-c a") 'org-agenda)

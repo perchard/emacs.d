@@ -314,7 +314,7 @@ Does so by looking for `zetteldeft-title-prefix'."
 ZDFILE should be a full path to a note."
   (let ((baseName (file-name-base zdFile)))
     (replace-regexp-in-string
-     "[0-9]\\{2,\\}-[0-9-]+[[:space:]]"
+     (concat zetteldeft-id-regex "+[[:space:]]")
      "" baseName)))
 
 (defun zetteldeft--insert-title ()
