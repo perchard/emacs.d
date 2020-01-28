@@ -65,6 +65,7 @@
 (add-hook 'visual-fill-column-mode-hook #'visual-line-mode)
 (add-hook 'markdown-mode-hook #'visual-fill-column-mode)
 (add-hook 'org-mode-hook #'visual-fill-column-mode)
+(setq markdown-command "multimarkdown")
 (setq visual-fill-column-center-text t)
 
 ;; markdown support
