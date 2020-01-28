@@ -159,6 +159,10 @@
 (require-package 'clojure-mode)
 (require-package 'cider)
 
+;; magit
+(require-package 'magit)
+(global-set-key (kbd "C-x g") 'magit-status)
+
 ;; hide tool bar, scroll bar, and menu bar
 (if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
 (if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
