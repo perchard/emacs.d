@@ -142,7 +142,7 @@
         "~/Dropbox/gtd/to-read.org"
         "~/Dropbox/gtd/to-watch.org"
         "~/Dropbox/gtd/shopstyle.org"
-        "~/Dropbox/gtd/consulting.org"
+        "~/Dropbox/gtd/tickler.org"
         "~/Dropbox/gtd/someday.org"))
 (setq org-refile-targets '((org-agenda-files :maxlevel . 3)))
 (setq org-refile-use-outline-path 'file)
@@ -163,6 +163,10 @@
 ;; magit
 (require-package 'magit)
 (global-set-key (kbd "C-x g") 'magit-status)
+
+;; ripgrep
+(require-package 'rg)
+(rg-enable-default-bindings)
 
 ;; hide tool bar, scroll bar, and menu bar
 (if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
