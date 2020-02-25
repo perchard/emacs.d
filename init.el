@@ -53,6 +53,7 @@
 ;; prompt available keybinding completions
 (require-package 'which-key)
 (which-key-mode)
+(which-key-setup-side-window-right)
 
 ;; typography
 (add-to-list 'default-frame-alist '(font . "Operator Mono 16"))
@@ -155,6 +156,7 @@
          (file "~/Dropbox/gtd/inbox.org")
          "* TODO %?"
          :prepend t)))
+(setq org-tags-column 0)
 
 ;; clojure
 (require-package 'clojure-mode)
