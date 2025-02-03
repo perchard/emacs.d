@@ -58,3 +58,9 @@
 (straight-use-package 'which-key)
 (which-key-mode)
 (which-key-setup-side-window-right)
+
+;; a major mode for editing Markdown-formatted text
+(straight-use-package 'markdown-mode)
+
+;; a simple LLM client for Emacs
+(straight-use-package 'gptel)
