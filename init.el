@@ -27,19 +27,23 @@
   (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t)))
 
 ;; set typography
-(add-to-list 'default-frame-alist '(font . "JetBrains Mono-16"))
+(add-to-list 'default-frame-alist '(font . "Berkeley Mono-16"))
+(setq-default line-spacing 0.2)
 
 ;; set theme
 (straight-use-package 'doom-themes)
 (setq doom-themes-enable-bold t
       doom-themes-enable-italic t)
-(load-theme 'doom-one t)
+(load-theme 'doom-monokai-pro t)
 (doom-themes-visual-bell-config)
 (doom-themes-org-config)
 
 ;; configure backups
 (setq backup-directory-alist `(("." . "~/.emacs-backups")))
 (setq backup-by-copying t)
+
+;; save desktop configuration
+(desktop-save-mode t)
 
 ;; auto close brackets
 (electric-pair-mode 1)
@@ -64,3 +68,34 @@
 
 ;; a simple LLM client for Emacs
 (straight-use-package 'gptel)
+
+;; tree-based file navigation
+(straight-use-package 'neotree)
+(global-set-key [f8] 'neotree-toggle)
+
+;; in-buffer completion
+(straight-use-package 'company)
+(setq company-backends '(company-capf
+                         company-keywords))
+(add-hook 'after-init-hook 'global-company-mode)
+
+;; git porcelain
+(straight-use-package 'magit)
+
+;; treesitter sources
+(setq treesit-language-source-alist
+   '((bash "https://github.com/tree-sitter/tree-sitter-bash")
+     (cmake "https://github.com/uyha/tree-sitter-cmake")
+     (css "https://github.com/tree-sitter/tree-sitter-css")
+     (elisp "https://github.com/Wilfred/tree-sitter-elisp")
+     (go "https://github.com/tree-sitter/tree-sitter-go")
+     (html "https://github.com/tree-sitter/tree-sitter-html")
+     (javascript "https://github.com/tree-sitter/tree-sitter-javascript" "master" "src")
+     (json "https://github.com/tree-sitter/tree-sitter-json")
+     (make "https://github.com/alemuller/tree-sitter-make")
+     (markdown "https://github.com/ikatyang/tree-sitter-markdown")
+     (python "https://github.com/tree-sitter/tree-sitter-python")
+     (toml "https://github.com/tree-sitter/tree-sitter-toml")
+     (tsx "https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src")
+     (typescript "https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src")
+     (yaml "https://github.com/ikatyang/tree-sitter-yaml")))		  
